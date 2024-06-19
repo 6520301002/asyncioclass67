@@ -1,6 +1,4 @@
 # Using a ThreadPoolExecutor
-# Working With Many Threads
-# Using a ThreadPoolExecutor
 import concurrent.futures
 import logging
 import time
