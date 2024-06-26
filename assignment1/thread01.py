@@ -2,15 +2,19 @@
 from time import sleep, ctime
 from threading import Thread
 
-def task():
-    
-    sleep(1)
 
-    print(f'{ctime()} this is from another thread')
-    
+# a custom function that blocks for a moment
+def task():
+    # block for a moment
+    sleep(1)
+    # display a message
+    print(f'{ctime()} This is from another thread')
+
+# create a thread
 thread = Thread(target=task)
-    
+# run the thread
 thread.start()
-    
-print(f'{ctime()}Waiting for the thread...')
+# wait for the thread to finish
+print(f'{ctime()} Waiting for the thread...')
+
 thread.join()
