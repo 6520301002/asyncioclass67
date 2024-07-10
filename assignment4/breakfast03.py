@@ -2,14 +2,14 @@
 import asyncio
 from time import sleep, time
 
-async def make_coffee():
+async def make_coffee(): #1
     print("coffee: prepare ingridients")
     sleep(1)
     print("coffee: waiting...")
     await asyncio.sleep(5) #2: pause, another
     print("coffee: ready")
     
-async def fry_eggs():
+async def fry_eggs(): #1
     print("egg: prepare ingridients")
     sleep(1)
     print("egg: frying...")
@@ -24,4 +24,4 @@ async def main():
     await eggs_task
     print(f"breakfast is ready in {time()-start} min")
     
-    asyncio.run(main())
+asyncio.run(main())

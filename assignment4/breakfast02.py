@@ -9,7 +9,7 @@ async def make_coffee():
     await asyncio.sleep(5) #2: pause, another
     print("coffee: ready")
     
-async def fry_eggs():
+async def fry_eggs(): #1
     print("egg: prepare ingridients")
     sleep(1)
     print("egg: frying...")
@@ -22,4 +22,4 @@ async def main():
     await fry_eggs()
     print(f"breakfast is ready in {time()-start} min")
     
-    asyncio.run(main())
+asyncio.run(main()) #run top- level
