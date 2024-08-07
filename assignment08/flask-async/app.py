@@ -5,17 +5,31 @@ import time
 import random
 from pypokemon.pokemon import Pokemon
 
-
 app = Flask(__name__)
 
 async def get_pokemon(client, url):
-    pass
+    print(f"{time.ctime()} - get {url}")
+    resp = await client.get(url)
+    pokemon_data = resp.json()
+    return Pokemon(pokemon_data)
 
 async def get_pokemons():
-    pass
+    async with httpx.AsyncClient() as client:
+        tasks = []
+        rand_list = [random.randint(1, 151) for _ in range(5)]
+        for number in rand_list:
+            url = f'https://pokeapi.co/api/v2/pokemon/{number}'
+            tasks.append(get_pokemon(client, url))
+        pokemons = await asyncio.gather(*tasks)
+        return pokemons
 
 @app.route('/')
 async def index():
-    pass
+    start_time = time.perf_counter()
+    pokemons = await get_pokemons()
+    end_time = time.perf_counter()
+    print(f"{time.ctime()} - Get {len(pokemons)} pokemons. Time taken: {end_time - start_time} seconds")
+    return render_template('index.html', pokemons=pokemons, end_time=end_time, start_time=start_time)
+
 if __name__ == '__main__':
     app.run(debug=True, port=50001)

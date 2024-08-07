@@ -5,11 +5,23 @@ import time
 import random
 
 async def get_pokemon(client, url):
-    pass
+    print(f"{time.ctime()} - get {url}")
+    resp = await client.get(url)
+    pokemon_json = resp.json()
+    pokemon_object = Pokemon(pokemon_json)
+    return pokemon_object
 
 async def get_pokemons():
     async with httpx.AsyncClient() as client:
-        pass
+        tasks = []
+        rand_list = [random.randint(1, 151) for _ in range(5)]
+        
+        for number in rand_list:
+            url = f'https://pokeapi.co/api/v2/pokemon/{number}'
+            tasks.append(asyncio.create_task(get_pokemon(client, url)))
+            
+        pokemons = await asyncio.gather(*tasks)
+        return pokemons
 
 async def index():
     start_time = time.perf_counter()
@@ -18,4 +30,4 @@ async def index():
     print(f"{time.ctime()} - Asynchronous get {len(pokemons)} pokemons. Time taken: {end_time-start_time} seconds")
 
 if __name__ == '__main__':
-   asyncio.run(index())
+    asyncio.run(index())
