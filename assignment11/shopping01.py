@@ -11,7 +11,7 @@ class Product:
     def __init__(self, product_name: str, checkout_time: float):
         self.product_name = product_name
         self.checkout_time = checkout_time
-
+#fsf
 
 class Customer:
     def __init__(self, customer_id: int, products: list[Product]):
@@ -99,10 +99,10 @@ if __name__ == "__main__":
 
 # +--------|------------|-------------|-----------------------|-------------------------    
 # Queue	   | Customer   | Cashier	  |  Time each Customer	  |  Time for all Customers
-# 2	       | 2	        | 2		      |         2.1           |     2.02s     
-# 2	       | 3	        | 2		      |         2.1           |     4.05s                                          		
-# 2	       | 4	        | 2		      |         2.1           |     4.07s     
-# 2	       | 10	        | 3		      |         2 .1          |     10.1s      
-# 5	       | 10	        | 4			  |         2 .1          |     6.04s          
-# 5	       | 20			| 5           |         2 .1          |  >= 8.1s
-# +--------|------------|-------------|-----------------------|-------------------------    
+# 2	       | 2	        | 2		      |         2.03           |     2.02s     
+# 2	       | 3	        | 2		      |         2.03           |     4.05s                                          		
+# 2	       | 4	        | 2		      |         2.03           |     4.07s     
+# 2	       | 10	        | 3		      |         2.03           |     10.1s      
+# 5	       | 10	        | 4			  |         2.03           |     6.04s          
+# 5	       | 20			| 5           |         2.03           |  >= 8.1s
+# +--------|------------|-------------|--------------- --------|-------------------------    
