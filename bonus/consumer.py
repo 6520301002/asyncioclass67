@@ -1,35 +1,21 @@
 # https://aiokafka.readthedocs.io/en/stable/
-import json
-from collections import Counter
+from aiokafka import AIOKafkaConsumer
+import asyncio
 
-redis = await aioredis.create_redis(("localhost", 6379))
-REDIS_HASH_KEY = "aggregated_count:my_topic:0"
+async def consume():
+    consumer = AIOKafkaConsumer(
+        'my_topic', 'my_other_topic',
+        bootstrap_servers='localhost:9092',
+        group_id="my-group")
+    # Get cluster layout and join group `my-group`
+    await consumer.start()
+    try:
+        # Consume messages
+        async for msg in consumer:
+            print("consumed: ", msg.topic, msg.partition, msg.offset,
+                  msg.key, msg.value, msg.timestamp)
+    finally:
+        # Will leave consumer group; perform autocommit if enabled.
+        await consumer.stop()
 
-tp = TopicPartition("my_topic", 0)
-consumer = AIOKafkaConsumer(
-    bootstrap_servers='localhost:9092',
-    enable_auto_commit=False,
-)
-await consumer.start()
-consumer.assign([tp])
-
-# Load initial state of aggregation and last processed offset
-offset = -1
-counts = Counter()
-initial_counts = await redis.hgetall(REDIS_HASH_KEY, encoding="utf-8")
-for key, state in initial_counts.items():
-    state = json.loads(state)
-    offset = max([offset, state['offset']])
-    counts[key] = state['count']
-
-# Same as with manual commit, you need to fetch next message, so +1
-consumer.seek(tp, offset + 1)
-
-async for msg in consumer:
-    key = msg.key.decode("utf-8")
-    counts[key] += 1
-    value = json.dumps({
-        "count": counts[key],
-        "offset": msg.offset
-    })
-    await redis.hset(REDIS_HASH_KEY, key, value)
+asyncio.run(consume())

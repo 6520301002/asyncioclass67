@@ -3,10 +3,7 @@ import asyncio
 from asyncio import Queue
 from random import randrange
 
-# we first implement the Customer and Product classes, 
-# representing customers and products that need to be checked out. 
-# The Product class has a checkout_time attribute, 
-# which represents the time required for checking out the product.
+
 class Product:
     def __init__(self, product_name: str, checkout_time: float):
         self.product_name = product_name
@@ -74,10 +71,10 @@ async def customer_generation(queue: Queue, customers: int):
 # Finally, we use the main method to initialize the queue, 
 # producer, and consumer, and start all concurrent tasks.
 async def main():
-    customer_queue = Queue(5)
+    customer_queue = Queue(3)
     customer_start_time = time.perf_counter()
     async with asyncio.TaskGroup() as group:
-        customer_group = group.create_task(customer_generation(customer_queue,20))
+        customer_group = group.create_task(customer_generation(customer_queue,10))
         cashiers_group = [group.create_task(checkout_customer(customer_queue,i)) for i in range(5)] 
 
     print("-"*20)
